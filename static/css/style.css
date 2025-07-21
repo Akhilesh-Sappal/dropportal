@@ -427,9 +427,6 @@ body {
 
 
 
-
-
-
 .custom-file-upload {
   position: relative;
   display: inline-block;
@@ -451,4 +448,3 @@ body {
   cursor: pointer;
   z-index: 2;
 }
-

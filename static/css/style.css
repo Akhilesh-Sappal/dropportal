@@ -370,3 +370,29 @@ body {
         flex-direction: column;
     }
 }
+
+
+
+
+
+
+
+.header-flex {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px; /* Adjust spacing between logo and text */
+}
+
+.logo-img {
+    height: 48px;  /* Adjust to your logo’s size */
+    width: auto;
+}
+
+.header-title {
+    font-size: 2.2rem;
+    font-weight: bold;
+    color: #000;
+    margin-left: 0; /* No extra margin needed with gap */
+}
+

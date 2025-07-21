@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FileShare Pro - Share Files Instantly</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <h1 class="logo">DropPortal</h1>
+            <p class="tagline">Share Any File, Anywhere, Instantly</p>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <div class="upload-section">
+                <h2>Upload Your File</h2>
+                
+                <!-- Drag and Drop Area -->
+                <div class="drop-zone" id="dropZone">
+                    <div class="drop-content">
+                        <div class="upload-icon">📤</div>
+                        <p class="drop-text">Drag and drop your file here</p>
+                        <p class="or-text">or</p>
+                        <label for="fileInput" class="upload-btn">Choose File</label>
+                        <input type="file" id="fileInput" accept="*/*" style="display: none;">
+                        <p class="file-info">Any format • Max 100MB</p>
+                    </div>
+                </div>
+
+                <!-- Selected File Info -->
+                <div class="file-selected" id="fileSelected" style="display: none;">
+                    <div class="file-info-card">
+                        <span class="file-icon">📄</span>
+                        <div class="file-details">
+                            <p class="file-name" id="selectedFileName"></p>
+                            <p class="file-size" id="selectedFileSize"></p>
+                        </div>
+                        <button class="remove-file" id="removeFile">✕</button>
+                    </div>
+                </div>
+
+                <!-- Generate Link Button -->
+                <button class="generate-btn" id="generateBtn" disabled>Generate Share Link</button>
+
+                <!-- Loading State -->
+                <div class="loading" id="loading" style="display: none;">
+                    <div class="spinner"></div>
+                    <p>Generating your share link...</p>
+                </div>
+
+                <!-- Result Section -->
+                <div class="result-section" id="resultSection" style="display: none;">
+                    <h3>File Shared Successfully! 🎉</h3>
+                    
+                    <div class="result-content">
+                        <div class="qr-section">
+                            <h4>QR Code</h4>
+                            <div class="qr-container">
+                                <img id="qrCode" alt="QR Code" class="qr-image">
+                            </div>
+                            <p class="qr-text">Scan to download</p>
+                        </div>
+                        
+                        <div class="link-section">
+                            <h4>Share Link</h4>
+                            <div class="link-container">
+                                <input type="text" id="shareLink" class="link-input" readonly>
+                                <button class="copy-btn" id="copyBtn">Copy</button>
+                            </div>
+                            <p class="link-text">Share this link with anyone</p>
+                        </div>
+                    </div>
+                    
+                    <button class="new-upload-btn" id="newUploadBtn">Upload Another File</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>DropPortal</h3>
+                    <p>The fastest way to share files securely. Upload any format, generate instant download links with QR codes.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Features</h4>
+                    <ul>
+                        <li>Any file format supported</li>
+                        <li>Instant QR code generation</li>
+                        <li>Secure file sharing</li>
+                        <li>No registration required</li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>About</h4>
+                    <p>Built with modern web technologies for seamless file sharing experience. Fast, secure, and reliable.</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; DROPPORTAL .  Made with love for easy file sharing.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

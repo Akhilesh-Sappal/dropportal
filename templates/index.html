@@ -10,12 +10,12 @@
 <body>
     <!-- Header -->
     <header class="header">
-        <div class="container">
-            <h1 class="logo">DropPortal</h1>
-            <p class="tagline">Share Any File, Anywhere, Instantly</p>
-        </div>
-    </header>
-
+  <div class="container header-flex">
+    <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo" class="logo-img">
+    <span class="header-title">DropPortal</span>
+  </div>
+  <p class="header-tagline">Share Any File, Anywhere, Instantly</p>
+</header>
     <!-- Main Content -->
     <main class="main-content">
         <div class="container">

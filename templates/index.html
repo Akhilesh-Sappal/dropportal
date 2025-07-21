@@ -1,397 +1,120 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DropPortal - Share Files Instantly</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='favicon.png') }}">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+  <div class="container header-flex">
+    <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo" class="logo-img">
+    <span class="header-title">DropPortal</span>
+  </div>
+  <p class="header-tagline">Share Any File, Anywhere, Instantly</p>
+</header>
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <div class="upload-section">
+                <h2>Upload Your File</h2>
+                
+                <!-- Drag and Drop Area -->
+                <div class="drop-zone" id="dropZone">
+                    <div class="drop-content">
+                        <div class="upload-icon">📤</div>
+                        <p class="drop-text">Drag and drop your file here</p>
+                        <p class="or-text">or</p>
+                        <div class="custom-file-upload">
+  <button type="button" class="upload-btn">Choose File</button>
+  <input type="file" id="fileInput" accept="*/*" tabindex="-1">
+</div>
 
-body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #000000;
-    color: #ffffff;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-}
+                        <p class="file-info">Any format • Max 100MB</p>
+                    </div>
+                </div>
 
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 20px;
-}
+                <!-- Selected File Info -->
+                <div class="file-selected" id="fileSelected" style="display: none;">
+                    <div class="file-info-card">
+                        <span class="file-icon">📄</span>
+                        <div class="file-details">
+                            <p class="file-name" id="selectedFileName"></p>
+                            <p class="file-size" id="selectedFileSize"></p>
+                        </div>
+                        <button class="remove-file" id="removeFile">✕</button>
+                    </div>
+                </div>
 
-/* Header */
-.header {
-    background-color: #FFD700;
-    color: #000000;
-    padding: 20px 0;
-    text-align: center;
-}
+                <!-- Generate Link Button -->
+                <button class="generate-btn" id="generateBtn" disabled>Generate Share Link</button>
 
-.logo {
-    font-size: 2.5rem;
-    font-weight: bold;
-    margin-bottom: 10px;
-}
+                <!-- Loading State -->
+                <div class="loading" id="loading" style="display: none;">
+                    <div class="spinner"></div>
+                    <p>Generating your share link...</p>
+                </div>
 
-.tagline {
-    font-size: 1.2rem;
-    opacity: 0.8;
-}
+                <!-- Result Section -->
+                <div class="result-section" id="resultSection" style="display: none;">
+                    <h3>File Shared Successfully! 🎉</h3>
+                    
+                    <div class="result-content">
+                        <div class="qr-section">
+                            <h4>QR Code</h4>
+                            <div class="qr-container">
+                                <img id="qrCode" alt="QR Code" class="qr-image">
+                            </div>
+                            <p class="qr-text">Scan to download</p>
+                        </div>
+                        
+                        <div class="link-section">
+                            <h4>Share Link</h4>
+                            <div class="link-container">
+                                <input type="text" id="shareLink" class="link-input" readonly>
+                                <button class="copy-btn" id="copyBtn">Copy</button>
+                            </div>
+                            <p class="link-text">Share this link with anyone</p>
+                        </div>
+                    </div>
+                    
+                    <button class="new-upload-btn" id="newUploadBtn">Upload Another File</button>
+                </div>
+            </div>
+        </div>
+    </main>
 
-/* Main Content */
-.main-content {
-    flex: 1;
-    padding: 60px 0;
-}
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>DropPortal</h3>
+                    <p>The fastest way to share files securely. Upload any format, generate instant download links with QR codes.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Features</h4>
+                    <ul>
+                        <li>Any file format supported</li>
+                        <li>Instant QR code generation</li>
+                        <li>Secure file sharing</li>
+                        <li>No registration required</li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>About</h4>
+                    <p>Built with modern web technologies for seamless file sharing experience. Fast, secure, and reliable.</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; DROPPORTAL .  Made with love for easy file sharing.</p>
+            </div>
+        </div>
+    </footer>
 
-.upload-section {
-    max-width: 600px;
-    margin: 0 auto;
-    text-align: center;
-}
-
-.upload-section h2 {
-    font-size: 2.5rem;
-    margin-bottom: 40px;
-    color: #FFD700;
-}
-
-/* Drop Zone */
-.drop-zone {
-    border: 3px dashed #FFD700;
-    border-radius: 20px;
-    padding: 60px 40px;
-    margin-bottom: 30px;
-    transition: all 0.3s ease;
-    cursor: pointer;
-}
-
-.drop-zone:hover,
-.drop-zone.drag-over {
-    border-color: #ffffff;
-    background-color: rgba(255, 215, 0, 0.1);
-}
-
-.drop-content .upload-icon {
-    font-size: 4rem;
-    margin-bottom: 20px;
-}
-
-.drop-text {
-    font-size: 1.5rem;
-    margin-bottom: 15px;
-    color: #FFD700;
-}
-
-.or-text {
-    font-size: 1.2rem;
-    margin: 20px 0;
-    color: #cccccc;
-}
-
-.upload-btn {
-    background-color: #FFD700;
-    color: #000000;
-    padding: 15px 30px;
-    border-radius: 50px;
-    font-size: 1.2rem;
-    font-weight: bold;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    display: inline-block;
-}
-
-.upload-btn:hover {
-    background-color: #ffffff;
-    transform: translateY(-2px);
-}
-
-.file-info {
-    margin-top: 20px;
-    color: #cccccc;
-    font-size: 0.9rem;
-}
-
-/* File Selected */
-.file-selected {
-    margin-bottom: 30px;
-}
-
-.file-info-card {
-    background-color: #1a1a1a;
-    border: 2px solid #FFD700;
-    border-radius: 15px;
-    padding: 20px;
-    display: flex;
-    align-items: center;
-    gap: 15px;
-}
-
-.file-icon {
-    font-size: 2rem;
-}
-
-.file-details {
-    flex: 1;
-    text-align: left;
-}
-
-.file-name {
-    font-size: 1.2rem;
-    font-weight: bold;
-    color: #FFD700;
-}
-
-.file-size {
-    color: #cccccc;
-    margin-top: 5px;
-}
-
-.remove-file {
-    background-color: #ff4444;
-    color: white;
-    border: none;
-    border-radius: 50%;
-    width: 30px;
-    height: 30px;
-    cursor: pointer;
-    font-size: 1.2rem;
-}
-
-/* Generate Button */
-.generate-btn {
-    background-color: #FFD700;
-    color: #000000;
-    padding: 18px 40px;
-    border: none;
-    border-radius: 50px;
-    font-size: 1.3rem;
-    font-weight: bold;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    margin-bottom: 30px;
-}
-
-.generate-btn:hover:not(:disabled) {
-    background-color: #ffffff;
-    transform: translateY(-2px);
-}
-
-.generate-btn:disabled {
-    background-color: #333333;
-    color: #666666;
-    cursor: not-allowed;
-}
-
-/* Loading */
-.loading {
-    margin: 40px 0;
-}
-
-.spinner {
-    border: 4px solid #333333;
-    border-top: 4px solid #FFD700;
-    border-radius: 50%;
-    width: 60px;
-    height: 60px;
-    animation: spin 1s linear infinite;
-    margin: 0 auto 20px;
-}
-
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-}
-
-/* Result Section */
-.result-section {
-    margin-top: 40px;
-}
-
-.result-section h3 {
-    color: #FFD700;
-    font-size: 2rem;
-    margin-bottom: 30px;
-}
-
-.result-content {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 40px;
-    margin-bottom: 30px;
-}
-
-.qr-section, .link-section {
-    background-color: #1a1a1a;
-    padding: 30px;
-    border-radius: 20px;
-    border: 2px solid #FFD700;
-}
-
-.qr-section h4, .link-section h4 {
-    color: #FFD700;
-    margin-bottom: 20px;
-    font-size: 1.3rem;
-}
-
-.qr-container {
-    margin-bottom: 15px;
-}
-
-.qr-image {
-    max-width: 200px;
-    border-radius: 10px;
-}
-
-.qr-text, .link-text {
-    color: #cccccc;
-    font-size: 0.9rem;
-}
-
-.link-container {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 15px;
-}
-
-.link-input {
-    flex: 1;
-    padding: 12px 15px;
-    border: 2px solid #333333;
-    border-radius: 10px;
-    background-color: #2a2a2a;
-    color: #ffffff;
-    font-size: 0.9rem;
-}
-
-.copy-btn {
-    background-color: #FFD700;
-    color: #000000;
-    border: none;
-    padding: 12px 20px;
-    border-radius: 10px;
-    cursor: pointer;
-    font-weight: bold;
-    transition: background-color 0.3s ease;
-}
-
-.copy-btn:hover {
-    background-color: #ffffff;
-}
-
-.new-upload-btn {
-    background-color: transparent;
-    color: #FFD700;
-    border: 2px solid #FFD700;
-    padding: 15px 30px;
-    border-radius: 50px;
-    font-size: 1.1rem;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.new-upload-btn:hover {
-    background-color: #FFD700;
-    color: #000000;
-}
-
-/* Footer */
-.footer {
-    background-color: #FFD700;
-    color: #000000;
-    padding: 40px 0 20px;
-    margin-top: auto;
-}
-
-.footer-content {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 40px;
-    margin-bottom: 30px;
-}
-
-.footer-section h3 {
-    font-size: 1.5rem;
-    margin-bottom: 15px;
-}
-
-.footer-section h4 {
-    font-size: 1.2rem;
-    margin-bottom: 15px;
-}
-
-.footer-section ul {
-    list-style: none;
-}
-
-.footer-section ul li {
-    margin-bottom: 8px;
-    padding-left: 15px;
-    position: relative;
-}
-
-.footer-section ul li:before {
-    content: "✓";
-    position: absolute;
-    left: 0;
-}
-
-.footer-bottom {
-    text-align: center;
-    padding-top: 20px;
-    border-top: 2px solid #000000;
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-    .result-content {
-        grid-template-columns: 1fr;
-        gap: 20px;
-    }
-    
-    .footer-content {
-        grid-template-columns: 1fr;
-        gap: 20px;
-    }
-    
-    .logo {
-        font-size: 2rem;
-    }
-    
-    .upload-section h2 {
-        font-size: 2rem;
-    }
-    
-    .drop-zone {
-        padding: 40px 20px;
-    }
-    
-    .link-container {
-        flex-direction: column;
-    }
-}
-
-
-
-
-
-
-
-.header-flex {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 12px; /* Adjust spacing between logo and text */
-}
-
-.logo-img {
-    height: 48px;  /* Adjust to your logo’s size */
-    width: auto;
-}
-
-.header-title {
-    font-size: 2.2rem;
-    font-weight: bold;
-    color: #000;
-    margin-left: 0; /* No extra margin needed with gap */
-}
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>
